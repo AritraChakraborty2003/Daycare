@@ -1,5 +1,7 @@
 "use client";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
+import axios from "axios";
 import CMSHeader from "../Components/CMSHeader";
 import Footer from "../Components/Footer";
 import {
@@ -26,6 +28,21 @@ const cards = [
 
 export default function CMSDashboard() {
   const router = useRouter();
+  const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL_TEST;
+
+  useEffect(() => {
+    const checkAuth = async () => {
+      try {
+        await axios.get(API_BASE_URL + "api/v1/admin/check", {
+          withCredentials: true,
+        });
+      } catch {
+        router.push("/cmslogin");
+      }
+    };
+
+    checkAuth();
+  }, [router, API_BASE_URL]);
 
   return (
     <>

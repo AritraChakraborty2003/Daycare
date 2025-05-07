@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import CMSHeader from "../Components/CMSHeader";
@@ -7,18 +7,17 @@ import Footer from "../Components/Footer";
 
 type Tab = "add" | "update" | "delete";
 
-export default function ProgramCMS() {
+export default function ExtraContentCMS() {
   const [tab, setTab] = useState<Tab>("add");
   const router = useRouter();
   const [form, setForm] = useState({
     title: "",
-    features: "",
+    slogan: "",
     description: "",
-    image: null as File | null,
   });
 
   const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL_TEST;
-  const endpoint = API_BASE_URL + "api/v1/program";
+  const endpoint = API_BASE_URL + "api/v1/extra";
 
   useEffect(() => {
     axios
@@ -31,32 +30,20 @@ export default function ProgramCMS() {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      setForm({ ...form, image: e.target.files[0] });
-    }
-  };
-
   const handleSubmit = async () => {
-    const data = new FormData();
-    data.append("title", form.title);
-    data.append("features", form.features);
-    data.append("description", form.description);
-    if (form.image) data.append("image", form.image);
-
     try {
       if (tab === "add") {
-        await axios.post(endpoint, data, { withCredentials: true });
-        alert("Program added");
+        await axios.post(endpoint, form, { withCredentials: true });
+        alert("Extra content added");
       } else if (tab === "update") {
-        await axios.put(endpoint, data, { withCredentials: true });
-        alert("Program updated");
+        await axios.put(endpoint, form, { withCredentials: true });
+        alert("Extra content updated");
       } else {
         await axios.delete(endpoint, {
           data: { title: form.title },
           withCredentials: true,
         });
-        alert("Program deleted");
+        alert("Extra content deleted");
       }
     } catch (err: any) {
       alert(err.response?.data?.error || "Operation failed");
@@ -67,7 +54,7 @@ export default function ProgramCMS() {
     <>
       <CMSHeader />
       <main className="bg-gray-100 py-10 min-h-screen">
-        <h2 className="text-2xl text-center text-blue-900 font-bold mb-6">Manage Programs</h2>
+        <h2 className="text-2xl text-center text-blue-900 font-bold mb-6">Manage Extra Content</h2>
         <div className="flex justify-center space-x-6 mb-8">
           {["add", "update", "delete"].map((t) => (
             <button
@@ -91,6 +78,13 @@ export default function ProgramCMS() {
           />
           {(tab === "add" || tab === "update") && (
             <>
+              <input
+                name="slogan"
+                placeholder="Slogan"
+                value={form.slogan}
+                onChange={handleChange}
+                className="w-full border px-3 py-2 rounded"
+              />
               <textarea
                 name="description"
                 placeholder="Description"
@@ -98,14 +92,6 @@ export default function ProgramCMS() {
                 onChange={handleChange}
                 className="w-full border px-3 py-2 rounded"
               />
-              <input
-                name="features"
-                placeholder="Features (comma separated)"
-                value={form.features}
-                onChange={handleChange}
-                className="w-full border px-3 py-2 rounded"
-              />
-              <input type="file" onChange={handleFileChange} />
             </>
           )}
           <button
