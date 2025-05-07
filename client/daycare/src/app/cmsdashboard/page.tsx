@@ -1,52 +1,52 @@
+"use client";
+import { useRouter } from "next/navigation";
+import CMSHeader from "../Components/CMSHeader";
 import Footer from "../Components/Footer";
-import Header from "../Components/Navbar";
 import {
-  FaUsers,
+  FaInfoCircle,
+  FaClock,
   FaImages,
-  FaChalkboardTeacher,
   FaEnvelope,
-  FaUserTie,
+  FaUserCheck,
+  FaStar,
+  FaFileAlt,
+  FaBookOpen,
 } from "react-icons/fa";
 
-const sections = [
-  { name: "Team", icon: <FaUsers size={30} className="text-yellow-500" /> },
-  { name: "Gallery", icon: <FaImages size={30} className="text-yellow-500" /> },
-  {
-    name: "Program",
-    icon: <FaChalkboardTeacher size={30} className="text-yellow-500" />,
-  },
-  {
-    name: "Contact",
-    icon: <FaEnvelope size={30} className="text-yellow-500" />,
-  },
-  {
-    name: "Principal Message",
-    icon: <FaUserTie size={30} className="text-yellow-500" />,
-  },
+const cards = [
+  { title: "About", icon: <FaInfoCircle />, route: "/aboutcms" },
+  { title: "Timing", icon: <FaClock />, route: "/timingcms" },
+  { title: "Gallery", icon: <FaImages />, route: "/gallerycms" },
+  { title: "Message", icon: <FaEnvelope />, route: "/messagecms" },
+  { title: "Admission", icon: <FaUserCheck />, route: "/admissioncms" },
+  { title: "Testimonial", icon: <FaStar />, route: "/testimonialcms" },
+  { title: "Extra Content", icon: <FaFileAlt />, route: "/extracontentcms" },
+  { title: "Program", icon: <FaBookOpen />, route: "/programcms" },
 ];
 
-export default function CMSCards() {
+export default function CMSDashboard() {
+  const router = useRouter();
+
   return (
     <>
-      <Header />
-      <div className="min-h-[100vh] lg:mt-20 flex flex-wrap justify-center items-center pt-8 gap-x-6 gap-y-7 bg-gray-50 p-6">
-        {sections.map(({ name, icon }) => (
-          <div
-            key={name}
-            className="bg-white w-[90vw] lg:w-[30vw] max-w-sm p-6 rounded shadow hover:shadow-md transition text-center"
-          >
-            <div className="mb-4 flex justify-center">{icon}</div>
-
-            <h3 className="text-xl font-semibold">{name}</h3>
-            <p className="text-sm text-gray-500 mt-2 mb-4">
-              Manage content for {name.toLowerCase()} section
-            </p>
-            <button className="bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600">
-              Click Me
-            </button>
-          </div>
-        ))}
-      </div>
+      <CMSHeader />
+      <main className="p-6 min-h-[80vh] bg-gray-100">
+        <h2 className="text-2xl font-bold mb-6 text-center text-blue-900">
+          CMS Dashboard
+        </h2>
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 max-w-6xl mx-auto">
+          {cards.map((card, index) => (
+            <div
+              key={index}
+              onClick={() => router.push(card.route)}
+              className="cursor-pointer bg-white rounded shadow p-6 flex flex-col items-center text-center hover:shadow-lg hover:scale-105 transition"
+            >
+              <div className="text-4xl text-blue-700 mb-2">{card.icon}</div>
+              <h3 className="text-lg font-semibold">{card.title}</h3>
+            </div>
+          ))}
+        </div>
+      </main>
       <Footer />
     </>
   );

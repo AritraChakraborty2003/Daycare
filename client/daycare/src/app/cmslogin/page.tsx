@@ -1,33 +1,64 @@
 "use client";
 import { useState } from "react";
-import Header from "../Components/Navbar";
+import { useRouter } from "next/navigation";
+import axios from "axios";
 import Footer from "../Components/Footer";
-
-export default function LoginPage() {
+import CMSHeader from "../Components/CMSHeader";
+export default function CMSLogin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const router = useRouter();
+
+  const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL_TEST;
+
+  const handleLogin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      await axios.post(
+        API_BASE_URL + "api/v1/admin/login",
+        { email, password },
+        { withCredentials: true }
+      );
+      router.push("/cmsdashboard");
+    } catch {
+      alert("Login failed. Please check your credentials.");
+    }
+  };
 
   return (
     <>
-      <Header />
-      <div className="w-[96vw] h-[80vh] flex items-center justify-center bg-gray-100">
-        <form className="bg-white p-8 rounded shadow-md w-[95vw] lg:w-[30vw]">
-          <h2 className="text-2xl font-bold mb-6 text-center">Admin Login</h2>
+      <CMSHeader />
+      <div className="flex items-center justify-center pb-24 pt-20 bg-gray-100">
+        <form
+          onSubmit={handleLogin}
+          className="bg-white p-6 rounded shadow-md w-full max-w-sm space-y-4"
+        >
+          <h2 className="text-center text-2xl font-bold">CMS Login</h2>
+
           <input
             type="email"
+            name="email"
             placeholder="Email"
-            className="w-full mb-4 p-2 border rounded"
+            required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            className="w-full border border-gray-300 px-3 py-2 rounded"
           />
+
           <input
             type="password"
+            name="password"
             placeholder="Password"
-            className="w-full mb-4 p-2 border rounded"
+            required
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            className="w-full border border-gray-300 px-3 py-2 rounded"
           />
-          <button className="w-full bg-yellow-500 hover:bg-yellow-600 text-white py-2 rounded">
+
+          <button
+            type="submit"
+            className="w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700"
+          >
             Login
           </button>
         </form>
