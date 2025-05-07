@@ -54,8 +54,14 @@ export default function MessageCMS() {
         });
         alert("Message deleted");
       }
-    } catch (err: any) {
-      alert("Operation failed: " + err.response?.data?.error || err.message);
+    } catch (err: unknown) {
+      if (axios.isAxiosError(err)) {
+        alert(
+          "Operation failed: " + (err.response?.data?.error || err.message)
+        );
+      } else {
+        alert("Operation failed: " + String(err));
+      }
     }
   };
 
@@ -124,7 +130,9 @@ export default function MessageCMS() {
           <button
             onClick={handleSubmit}
             className={`w-full py-2 rounded text-white ${
-              tab === "delete" ? "bg-red-600 hover:bg-red-700" : "bg-blue-600 hover:bg-blue-700"
+              tab === "delete"
+                ? "bg-red-600 hover:bg-red-700"
+                : "bg-blue-600 hover:bg-blue-700"
             }`}
           >
             {tab.charAt(0).toUpperCase() + tab.slice(1)}

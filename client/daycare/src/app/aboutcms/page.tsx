@@ -68,8 +68,14 @@ export default function AboutCMS() {
         });
         alert("Deleted successfully");
       }
-    } catch (err: any) {
-      alert("Operation failed: " + err.response?.data?.error || err.message);
+    } catch (err: unknown) {
+      if (axios.isAxiosError(err)) {
+        alert(
+          "Operation failed: " + (err.response?.data?.error || err.message)
+        );
+      } else {
+        alert("Operation failed: " + String(err));
+      }
     }
   };
 

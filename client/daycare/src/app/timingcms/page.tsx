@@ -51,8 +51,14 @@ export default function TimingCMS() {
         });
         alert("Timing deleted successfully");
       }
-    } catch (err: any) {
-      alert("Operation failed: " + err.response?.data?.error || err.message);
+    } catch (err: unknown) {
+      if (axios.isAxiosError(err)) {
+        alert(
+          "Operation failed: " + (err.response?.data?.error || err.message)
+        );
+      } else {
+        alert("Operation failed: " + String(err));
+      }
     }
   };
 
@@ -60,14 +66,18 @@ export default function TimingCMS() {
     <>
       <CMSHeader />
       <main className="bg-gray-100 min-h-screen py-8 px-4">
-        <h2 className="text-2xl font-bold text-center mb-6 text-blue-900">Manage Timings</h2>
+        <h2 className="text-2xl font-bold text-center mb-6 text-blue-900">
+          Manage Timings
+        </h2>
         <div className="flex justify-center space-x-6 mb-8">
           {["add", "update", "delete"].map((option) => (
             <button
               key={option}
               onClick={() => setTab(option as Tab)}
               className={`px-4 py-2 rounded ${
-                tab === option ? "bg-blue-600 text-white" : "bg-white border text-gray-700"
+                tab === option
+                  ? "bg-blue-600 text-white"
+                  : "bg-white border text-gray-700"
               }`}
             >
               {option.charAt(0).toUpperCase() + option.slice(1)}
@@ -106,7 +116,9 @@ export default function TimingCMS() {
           <button
             onClick={handleSubmit}
             className={`w-full py-2 rounded text-white ${
-              tab === "delete" ? "bg-red-600 hover:bg-red-700" : "bg-blue-600 hover:bg-blue-700"
+              tab === "delete"
+                ? "bg-red-600 hover:bg-red-700"
+                : "bg-blue-600 hover:bg-blue-700"
             }`}
           >
             {tab.charAt(0).toUpperCase() + tab.slice(1)}
