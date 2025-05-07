@@ -12,7 +12,7 @@ import { uploadSingle } from "../middleware/upload.js";
 
 router.post("/", uploadSingle("image"), createProgram);
 router.get("/", getPrograms);
-router.put("/:id", uploadSingle("image"), updateProgram);
+router.put("/", uploadSingle("image"), updateProgram);
 router.delete("/:id", deleteProgram);
 
 export default router;

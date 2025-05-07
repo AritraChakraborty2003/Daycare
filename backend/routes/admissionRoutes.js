@@ -3,13 +3,13 @@ import {
   createAdmission,
   updateAdmission,
   deleteAdmission,
-  getAdmissions
+  getAdmissions,
 } from "../controllers/AdmissionController.js";
 
 const router = express.Router();
 
 router.post("/", createAdmission);
-router.put("/:id", updateAdmission);
+router.put("/", updateAdmission);
 router.delete("/:id", deleteAdmission);
 router.get("/", getAdmissions);
 

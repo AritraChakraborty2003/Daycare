@@ -12,7 +12,7 @@ const router = express.Router();
 
 router.post("/", uploadMultiple("images"), createGallery);
 router.get("/", getGallery);
-router.put("/:id", uploadMultiple("images"), updateGallery);
+router.put("/", uploadMultiple("images"), updateGallery);
 router.delete("/:id", deleteGallery);
 
 export default router;

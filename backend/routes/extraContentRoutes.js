@@ -3,14 +3,14 @@ import {
   createExtraContent,
   getExtraContent,
   updateExtraContent,
-  deleteExtraContent
+  deleteExtraContent,
 } from "../controllers/ExtraContentController.js";
 
 const router = express.Router();
 
 router.post("/", createExtraContent);
 router.get("/", getExtraContent);
-router.put("/:id", updateExtraContent);
+router.put("/", updateExtraContent);
 router.delete("/:id", deleteExtraContent);
 
 export default router;

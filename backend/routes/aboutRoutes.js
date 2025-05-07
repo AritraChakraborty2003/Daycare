@@ -10,7 +10,7 @@ import { uploadSingle } from "../middleware/upload.js";
 const router = express.Router();
 
 router.post("/", uploadSingle("image"), createAbout);
-router.put("/:id", uploadSingle("image"), updateAbout);
+router.put("/", uploadSingle("image"), updateAbout);
 router.delete("/:id", deleteAbout);
 router.get("/", getAbout);
 
